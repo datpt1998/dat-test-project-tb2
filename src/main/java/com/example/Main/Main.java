@@ -1,0 +1,77 @@
+package com.example.Main;
+
+import com.example.Data.Animal;
+import com.example.Service.GenericService;
+import com.example.Service.TargetClass;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class Main {
+    public static void main(String[] args) {
+
+        System.out.println();
+        System.out.println(null==null);
+        System.out.println("Traditional");
+        //1
+        TargetClass targetClass1 = new TargetClass();
+        targetClass1.setA(2);
+        targetClass1.setB(3);
+        targetClass1.getAdd();
+
+        //2
+        TargetClass targetClass2 = new TargetClass();
+        targetClass2.setA(5);
+        targetClass2.setB(4);
+        targetClass2.getAdd();
+
+        //3
+        TargetClass targetClass3 = new TargetClass();
+        targetClass3.setA(1);
+        targetClass3.setB(2);
+        targetClass3.getAdd();
+
+        System.out.println("Method Reference");
+        List<TargetClass> targets = new ArrayList<>();
+        targets.add(targetClass1);
+        targets.add(targetClass2);
+        targets.add(targetClass3);
+        GenericService<TargetClass> genericService = new GenericService<>();
+        genericService.setTargets(targets);
+        genericService.doFunc(TargetClass::getAdd);
+
+        //test null
+        List<TargetClass> targetClasses = new ArrayList<>();
+        TargetClass canNull1 = new TargetClass();
+        canNull1.setaCanNull(1);
+        TargetClass canNull2 = new TargetClass();
+        canNull2.setaCanNull(null);
+        TargetClass canNull3 = null;
+        targetClasses.addAll(Arrays.asList(canNull1, canNull2, canNull3));
+//        List<Integer> canNullList = targetClasses.stream().map(TargetClass::getaCanNull).collect(Collectors.toList());
+//        System.out.println(canNullList);
+//
+//        System.out.println("abc");
+//
+//        System.out.println(5%2);
+
+        System.out.println(targetClasses);
+
+        //test distinct
+
+        List<Animal> zoo = new ArrayList<>();
+        zoo.add(new Animal(1L));
+        zoo.add(new Animal(1L));
+        zoo.add(new Animal(2L));
+        System.out.println(zoo.stream().distinct().collect(Collectors.toList()));
+
+        Set<Animal> distinctZoo = new HashSet<>(zoo);
+        System.out.println(distinctZoo);
+
+        System.out.println(3|5);
+    }
+}
