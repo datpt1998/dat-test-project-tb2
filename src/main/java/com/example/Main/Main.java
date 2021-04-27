@@ -6,8 +6,10 @@ import com.example.Service.TargetClass;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -63,15 +65,25 @@ public class Main {
 
         //test distinct
 
-        List<Animal> zoo = new ArrayList<>();
-        zoo.add(new Animal(1L));
-        zoo.add(new Animal(1L));
-        zoo.add(new Animal(2L));
-        System.out.println(zoo.stream().distinct().collect(Collectors.toList()));
+//        List<Animal> zoo = new ArrayList<>();
+//        zoo.add(new Animal(1L));
+//        zoo.add(new Animal(1L));
+//        zoo.add(new Animal(2L));
+//        System.out.println(zoo.stream().distinct().collect(Collectors.toList()));
+//
+//        Set<Animal> distinctZoo = new HashSet<>(zoo);
+//        System.out.println(distinctZoo);
+//
+//        System.out.println(3|5);
 
-        Set<Animal> distinctZoo = new HashSet<>(zoo);
-        System.out.println(distinctZoo);
+        //TEST NATIVE
+//        TestNative testNative = new TestNative();
+//        System.out.println(testNative.getSystemTime());
 
-        System.out.println(3|5);
+        Integer[] sortTest = {1, 2, 3, 4, 5};
+        Arrays.sort(sortTest, (v1,v2)->{return (int) v1-(int) v2;});
+        System.out.println(Arrays.asList(sortTest));
+
+        Map<String, String> testMap = new HashMap<>();
     }
 }
