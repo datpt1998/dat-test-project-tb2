@@ -1,5 +1,10 @@
 package com.example.Main;
 
+import com.example.utils.html.constant.HtmlTagName;
+import com.example.utils.html.entity.CssNode;
+import com.example.utils.html.entity.HtmlNode;
+import com.example.utils.html.helper.MyHtmlHelper;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -7,11 +12,14 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
 public class ImageToText {
+    private static final int MAX_WIDTH = 1000;
+
     private static String toText(BufferedImage image) {
         StringBuilder text = new StringBuilder();
         for(int height = 0; height < image.getHeight(); height++) {
@@ -62,9 +70,44 @@ public class ImageToText {
         return text.toString();
     }
 
+    private static void exportTextToHtml(String content, String fileName, int fontSize) throws IOException {
+        CssNode paragraphStyle = new CssNode(HtmlTagName.DIV)
+                .addAttribute("font-size", fontSize+"px")
+                .addAttribute("font-family", "monospace");
+        HtmlNode styleNode = new HtmlNode(HtmlTagName.STYLE).addAttribute("type","text/css").addChildren(paragraphStyle);
+        HtmlNode headNode = new HtmlNode(HtmlTagName.HEAD).addChildren(styleNode);
+        HtmlNode paragraphNode = new HtmlNode(HtmlTagName.DIV);
+        if(content.contains("\n")) {
+            String[] lines = content.split("\n");
+            for(String line : lines) {
+                paragraphNode.addChildren(line);
+                HtmlNode breakNode = new HtmlNode(HtmlTagName.BREAK_LINE);
+                paragraphNode.addChildren(breakNode);
+            }
+        } else {
+            paragraphNode.addChildren(content);
+        }
+        HtmlNode bodyNode = new HtmlNode(HtmlTagName.BODY).addChildren(paragraphNode);
+        MyHtmlHelper htmlHelper = new MyHtmlHelper();
+        htmlHelper.addChildToRoot(headNode);
+        htmlHelper.addChildToRoot(bodyNode);
+        FileOutputStream outputStream = new FileOutputStream("imgtxthtml/html-"+ fileName + ".html");
+        outputStream.write(htmlHelper.getContent().getBytes());
+    }
+
     private static BufferedImage importImage (String path) throws IOException {
         FileInputStream inputStream = new FileInputStream(path);
         BufferedImage image = ImageIO.read(inputStream);
+        if(image.getWidth() > MAX_WIDTH) {
+            double scaleFactor = ((double) MAX_WIDTH) / ((double) image.getWidth());
+            int newHeight = (int)(((double)image.getHeight()) * scaleFactor);
+            BufferedImage scaledImage = new BufferedImage(MAX_WIDTH, newHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D scaledImageGraphic = scaledImage.createGraphics();
+            scaledImageGraphic.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING,
+                    RenderingHints.VALUE_RENDER_QUALITY));
+            scaledImageGraphic.drawImage(image, 0, 0, MAX_WIDTH, newHeight, null);
+            return scaledImage;
+        }
         return image;
     }
 
@@ -83,6 +126,7 @@ public class ImageToText {
             FileOutputStream outputStream = new FileOutputStream("imgtxt/text-" + selectedFile.getName()+".txt");
             String converted = toText(image);
             outputStream.write(converted.getBytes());
+            exportTextToHtml(converted, selectedFile.getName(), 1);
         }
         System.exit(0);
     }

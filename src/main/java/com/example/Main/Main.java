@@ -84,6 +84,9 @@ public class Main {
         Arrays.sort(sortTest, (v1,v2)->{return (int) v1-(int) v2;});
         System.out.println(Arrays.asList(sortTest));
 
-        Map<String, String> testMap = new HashMap<>();
+        System.out.println(Arrays.asList("a\nb".split("\n")));
+
+        System.out.println((int)12.5);
+        System.out.println((double) 12);
     }
 }
