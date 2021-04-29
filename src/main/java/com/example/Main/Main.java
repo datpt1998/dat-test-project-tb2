@@ -4,6 +4,7 @@ import com.example.Data.Animal;
 import com.example.Service.GenericService;
 import com.example.Service.TargetClass;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -88,5 +89,8 @@ public class Main {
 
         System.out.println((int)12.5);
         System.out.println((double) 12);
+
+        System.out.println(Color.RGBtoHSB(0,0,0,null)[2]);
+        System.out.println(Color.RGBtoHSB(255,255,255,null)[2]);
     }
 }
