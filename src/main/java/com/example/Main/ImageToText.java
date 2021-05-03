@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class ImageToText {
-    private static final int MAX_WIDTH = 1000;
+    private static final int MAX_WIDTH = 500;
 
     private static String toText(BufferedImage image) {
         StringBuilder text = new StringBuilder();
@@ -34,18 +34,83 @@ public class ImageToText {
                 float s = hsv[1];
                 float b = hsv[2];
 
-                //use b value of hsb
-                if(b > 0.8) {
-                    text.append("-");
-                } else if(b > 0.6) {
-                    text.append("+");
-                } else if(b > 0.4) {
-                    text.append("O");
-                } else if(b > 0.2) {
-                    text.append("@");
+                //use hsb space color
+                if(b < 0.1) {
+                    text.append("▓");
+                } else if (b < 0.3){
+                    if(s < 0.25) {
+                        text.append(";");
+                    } else if (s < 0.6) {
+                        if (h <= 0.83 && h >= 0.5) {
+                            text.append("&");
+                        } else if (h < 0.5 && h >= 0.17) {
+                            text.append("#");
+                        } else {
+                            text.append("*");
+                        }
+                    } else {
+                        if (h <= 0.83 && h >= 0.5) {
+                            text.append("@");
+                        } else if (h < 0.5 && h >= 0.17) {
+                            text.append("$");
+                        } else {
+                            text.append("%");
+                        }
+                    }
+                } else if (b < 0.6) {
+                    if(s < 0.25) {
+                        text.append(":");
+                    } else if (s < 0.6) {
+                        if (h <= 0.83 && h >= 0.5) {
+                            text.append("z");
+                        } else if (h < 0.5 && h >= 0.17) {
+                            text.append("c");
+                        } else {
+                            text.append("v");
+                        }
+                    } else {
+                        if (h <= 0.83 && h >= 0.5) {
+                            text.append("o");
+                        } else if (h < 0.5 && h >= 0.17) {
+                            text.append("a");
+                        } else {
+                            text.append("h");
+                        }
+                    }
                 } else {
-                    text.append("█");
+                    if(s < 0.25) {
+                        text.append(".");
+                    } else if (s < 0.6) {
+                        if (h <= 0.83 && h >= 0.5) {
+                            text.append("+");
+                        } else if (h < 0.5 && h >= 0.17) {
+                            text.append("-");
+                        } else {
+                            text.append("~");
+                        }
+                    } else {
+                        if (h <= 0.83 && h >= 0.5) {
+                            text.append("\\");
+                        } else if (h < 0.5 && h >= 0.17) {
+                            text.append("/");
+                        } else {
+                            text.append("|");
+                        }
+                    }
                 }
+
+                //use b value of hsb
+//                if(b > 0.8) {
+//                    text.append("-");
+//                } else if(b > 0.6) {
+//                    text.append("+");
+//                } else if(b > 0.4) {
+//                    text.append("O");
+//                } else if(b > 0.2) {
+//                    text.append("@");
+//                } else {
+//                    text.append("█");
+//                }
 
                 //10 area
 //                if(red > 225 || green > 225 || blue > 225) {

@@ -92,5 +92,6 @@ public class Main {
 
         System.out.println(Color.RGBtoHSB(0,0,0,null)[2]);
         System.out.println(Color.RGBtoHSB(255,255,255,null)[2]);
+        System.out.println(Color.RGBtoHSB(255,0,0,null)[2]);
     }
 }
