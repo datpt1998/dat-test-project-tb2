@@ -154,7 +154,7 @@ public class ImageToText {
             text.append("\n");
             status.append("\n");
         }
-        exportFile(status.toString(), "window-wall-status.txt");
+//        exportFile(status.toString(), "window-wall-status.txt");
         return text.toString();
     }
 
