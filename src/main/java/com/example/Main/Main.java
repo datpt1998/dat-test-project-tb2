@@ -93,5 +93,18 @@ public class Main {
         System.out.println(Color.RGBtoHSB(0,0,0,null)[2]);
         System.out.println(Color.RGBtoHSB(255,255,255,null)[2]);
         System.out.println(Color.RGBtoHSB(255,0,0,null)[2]);
+        float[] hsb = Color.RGBtoHSB(163, 129, 180, null);
+        float h = hsb[0];
+        float s = hsb[1];
+        float b = hsb[2];
+        System.out.println(h+"/"+s+"/"+b);
+
+        //TODO: some todo here
+        //normal comment
+        //Todo 2
+        //todo 3
+        //fixme asasdsa
+        //conbo hjh
+        //CONBO dsdsdsaadas
     }
 }
