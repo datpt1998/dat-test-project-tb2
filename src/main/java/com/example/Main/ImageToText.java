@@ -18,10 +18,11 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class ImageToText {
-    private static final int MAX_WIDTH = 500;
+    private static final int MAX_WIDTH = 1000;
 
-    private static String toText(BufferedImage image) {
+    private static String toText(BufferedImage image) throws IOException {
         StringBuilder text = new StringBuilder();
+        StringBuilder status = new StringBuilder();
         for(int height = 0; height < image.getHeight(); height++) {
             for (int width = 0; width < image.getWidth(); width++) {
                 Color currentColor = new Color(image.getRGB(width, height));
@@ -33,6 +34,8 @@ public class ImageToText {
                 float h = hsv[0];
                 float s = hsv[1];
                 float b = hsv[2];
+
+                status = status.append(h+"/"+s+"/"+b+" ");
 
                 //use hsb space color
                 if(b < 0.1) {
@@ -149,7 +152,9 @@ public class ImageToText {
 //                }
             }
             text.append("\n");
+            status.append("\n");
         }
+        exportFile(status.toString(), "window-wall-status.txt");
         return text.toString();
     }
 
@@ -194,6 +199,11 @@ public class ImageToText {
         return image;
     }
 
+    private static void exportFile(String content, String path) throws IOException {
+        FileOutputStream outputStream = new FileOutputStream(path);
+        outputStream.write(content.getBytes());
+    }
+
     public static void main(String[] args) throws IOException {
 //        URL url = ImageToText.class.getClassLoader().getResource("me2.jpg");
 //        BufferedImage image = importImage(url.getPath());
@@ -206,9 +216,8 @@ public class ImageToText {
         if(fileChooser.getSelectedFile() != null) {
             File selectedFile = fileChooser.getSelectedFile();
             BufferedImage image = importImage(selectedFile.getAbsolutePath());
-            FileOutputStream outputStream = new FileOutputStream("imgtxt/text-" + selectedFile.getName()+".txt");
             String converted = toText(image);
-            outputStream.write(converted.getBytes());
+            exportFile(converted, "imgtxt/text-" + selectedFile.getName()+".txt");
             exportTextToHtml(converted, selectedFile.getName(), 1);
         }
         System.exit(0);
