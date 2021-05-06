@@ -106,5 +106,7 @@ public class Main {
         //fixme asasdsa
         //conbo hjh
         //CONBO dsdsdsaadas
+
+        System.out.println((char)54772);
     }
 }

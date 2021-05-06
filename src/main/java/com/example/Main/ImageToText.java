@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class ImageToText {
-    private static final int MAX_WIDTH = 1000;
+    private static final int MAX_WIDTH = 500;
 
     private static String toText(BufferedImage image) throws IOException {
         StringBuilder text = new StringBuilder();
@@ -39,65 +39,65 @@ public class ImageToText {
 
                 //use hsb space color
                 if(b < 0.1) {
-                    text.append("▓");
+                    text.append("W");
                 } else if (b < 0.3){
                     if(s < 0.25) {
-                        text.append(";");
+                        text.append("O");
                     } else if (s < 0.6) {
                         if (h <= 0.83 && h >= 0.5) {
-                            text.append("&");
+                            text.append("V");
                         } else if (h < 0.5 && h >= 0.17) {
-                            text.append("#");
+                            text.append("P");
                         } else {
-                            text.append("*");
+                            text.append("X");
+                        }
+                    } else {
+                        if (h <= 0.83 && h >= 0.5) {
+                            text.append("R");
+                        } else if (h < 0.5 && h >= 0.17) {
+                            text.append("Q");
+                        } else {
+                            text.append("M");
+                        }
+                    }
+                } else if (b < 0.6) {
+                    if(s < 0.25) {
+                        text.append("=");
+                    } else if (s < 0.6) {
+                        if (h <= 0.83 && h >= 0.5) {
+                            text.append("1");
+                        } else if (h < 0.5 && h >= 0.17) {
+                            text.append("/");
+                        } else {
+                            text.append("7");
                         }
                     } else {
                         if (h <= 0.83 && h >= 0.5) {
                             text.append("@");
                         } else if (h < 0.5 && h >= 0.17) {
-                            text.append("$");
+                            text.append("6");
                         } else {
-                            text.append("%");
-                        }
-                    }
-                } else if (b < 0.6) {
-                    if(s < 0.25) {
-                        text.append(":");
-                    } else if (s < 0.6) {
-                        if (h <= 0.83 && h >= 0.5) {
-                            text.append("z");
-                        } else if (h < 0.5 && h >= 0.17) {
-                            text.append("c");
-                        } else {
-                            text.append("v");
-                        }
-                    } else {
-                        if (h <= 0.83 && h >= 0.5) {
-                            text.append("o");
-                        } else if (h < 0.5 && h >= 0.17) {
-                            text.append("a");
-                        } else {
-                            text.append("h");
+                            text.append("0");
                         }
                     }
                 } else {
                     if(s < 0.25) {
-                        text.append(".");
+                        text.append("-");
                     } else if (s < 0.6) {
                         if (h <= 0.83 && h >= 0.5) {
-                            text.append("+");
+                            text.append(".");
                         } else if (h < 0.5 && h >= 0.17) {
-                            text.append("-");
+                            text.append("'");
                         } else {
-                            text.append("~");
+                            text.append("*");
                         }
                     } else {
                         if (h <= 0.83 && h >= 0.5) {
-                            text.append("\\");
+                            text.append(":");
                         } else if (h < 0.5 && h >= 0.17) {
-                            text.append("/");
+                            text.append("\"");
                         } else {
-                            text.append("|");
+                            text.append("+");
                         }
                     }
                 }
