@@ -108,5 +108,10 @@ public class Main {
         //CONBO dsdsdsaadas
 
         System.out.println((char)54772);
+        Map<String, Integer> testMap = new HashMap<>();
+        testMap.put("a", 5);
+        testMap.put("b", 6);
+        testMap.put("a", 7);
+        System.out.println(testMap.get("a"));
     }
 }

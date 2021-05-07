@@ -20,6 +20,33 @@ import java.util.Arrays;
 public class ImageToText {
     private static final int MAX_WIDTH = 500;
 
+    private static void exportTextImage(BufferedImage image, String fileName) throws IOException {
+        int fontSize = 7;
+        // i don't know why
+        int width = image.getWidth() * (fontSize == 1 ? fontSize : (int)((double)fontSize/1.5));
+        int height = image.getHeight() * fontSize;
+        int x = 0;
+        int y = 0;
+        BufferedImage exportImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphic = exportImage.createGraphics();
+        graphic.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY));
+        graphic.setColor(Color.WHITE);
+//        graphic.setColor(Color.PINK);
+        graphic.fillRect(x, y, exportImage.getWidth(), exportImage.getHeight());
+        graphic.setColor(Color.BLACK);
+        graphic.setFont(new Font("Monospaced", Font.PLAIN, fontSize));
+        int yClone = y;
+        System.out.println(toText(image).split("\n").length);
+        for(String line : toText(image).split("\n")) {
+            System.out.println(line.length());
+            graphic.drawString(line, x, yClone);
+            yClone += fontSize;
+        }
+//        graphic.drawImage(image, 0, 0, null);
+        ImageIO.write(exportImage, "png", new File("timg/timg-"+fileName+".png"));
+    }
+
     private static String toText(BufferedImage image) throws IOException {
         StringBuilder text = new StringBuilder();
         StringBuilder status = new StringBuilder();
@@ -179,8 +206,7 @@ public class ImageToText {
         MyHtmlHelper htmlHelper = new MyHtmlHelper();
         htmlHelper.addChildToRoot(headNode);
         htmlHelper.addChildToRoot(bodyNode);
-        FileOutputStream outputStream = new FileOutputStream("imgtxthtml/html-"+ fileName + ".html");
-        outputStream.write(htmlHelper.getContent().getBytes());
+        exportFile(htmlHelper.getContent(), "imgtxthtml/html-"+ fileName + ".html");
     }
 
     private static BufferedImage importImage (String path) throws IOException {
@@ -204,6 +230,40 @@ public class ImageToText {
         outputStream.write(content.getBytes());
     }
 
+    private static void exportTextToSvg(String content, String fileName, int fontSize) throws IOException {
+        int x = 10;
+        int y = 10;
+
+        CssNode paragraphStyle = new CssNode("text")
+                .addAttribute("font-size", fontSize+"px")
+                .addAttribute("font-family", "monospace");
+        HtmlNode style = new HtmlNode(HtmlTagName.STYLE).addChildren(paragraphStyle);
+        HtmlNode svg = new HtmlNode("svg")
+                .addAttribute("height", "5000")
+                .addAttribute("width", "5000")
+                .addAttribute("xmlns", "http://www.w3.org/2000/svg")
+                .addAttribute("version", "1.1");
+        HtmlNode text = new HtmlNode("text")
+                .addAttribute("x", x+"")
+                .addAttribute("y", y+"");
+        if(content.contains("\n")) {
+            int yClone = y;
+            String[] lines = content.split("\n");
+            for(String line : lines) {
+                HtmlNode tspan = new HtmlNode("tspan")
+                        .addAttribute("x", x+"")
+                        .addAttribute("y", yClone+"")
+                        .addChildren(line);
+                text.addChildren(tspan);
+                yClone += (fontSize+1);
+            }
+        } else {
+            text.addChildren(content);
+        }
+        svg.addChildren(style).addChildren(text);
+        exportFile(svg.toString(), "imgsvg/svg-"+fileName+".svg");
+    }
+
     public static void main(String[] args) throws IOException {
 //        URL url = ImageToText.class.getClassLoader().getResource("me2.jpg");
 //        BufferedImage image = importImage(url.getPath());
@@ -219,6 +279,8 @@ public class ImageToText {
             String converted = toText(image);
             exportFile(converted, "imgtxt/text-" + selectedFile.getName()+".txt");
             exportTextToHtml(converted, selectedFile.getName(), 1);
+            exportTextToSvg(converted, selectedFile.getName(), 2);
+            exportTextImage(image, selectedFile.getName());
         }
         System.exit(0);
     }

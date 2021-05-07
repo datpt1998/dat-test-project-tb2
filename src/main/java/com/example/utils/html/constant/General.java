@@ -6,7 +6,7 @@ public class General {
 
     //FORMAT
     //HTML
-    public static final String ATTRIBUTE_FORMAT = "\"%s\"=\"%s\"";
+    public static final String ATTRIBUTE_FORMAT = "%s = \"%s\"";
     public static final String HTML_FORMAT = "<%s %s>%s</%s>";
     //CSS
     public static final String CSS_FORMAT = "%s{%s}";
