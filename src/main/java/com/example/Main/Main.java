@@ -1,12 +1,17 @@
 package com.example.Main;
 
 import com.example.Data.Animal;
+import com.example.Data.Base;
+import com.example.Data.Child;
 import com.example.Service.GenericService;
 import com.example.Service.TargetClass;
+import com.example.annotation.Test;
 
 import java.awt.*;
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -113,5 +118,8 @@ public class Main {
         testMap.put("b", 6);
         testMap.put("a", 7);
         System.out.println(testMap.get("a"));
+
+        System.out.println("Is base anot:" + Base.class.isAnnotationPresent(Test.class));
+        System.out.println("Is child anot:" + Child.class.isAnnotationPresent(Test.class));
     }
 }

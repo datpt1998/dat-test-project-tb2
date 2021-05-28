@@ -47,7 +47,7 @@ public class ImageToText {
         ImageIO.write(exportImage, "png", new File("timg/timg-"+fileName+".png"));
     }
 
-    private static String toText(BufferedImage image) throws IOException {
+    public static String toText(BufferedImage image) throws IOException {
         StringBuilder text = new StringBuilder();
         StringBuilder status = new StringBuilder();
         for(int height = 0; height < image.getHeight(); height++) {
