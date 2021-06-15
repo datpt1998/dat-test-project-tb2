@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.awt.image.DirectColorModel;
 import java.awt.image.WritableRaster;
 import java.io.File;
@@ -23,6 +24,14 @@ public class ImageToTextService {
     private final int MAX_WIDTH = 500;
 
     public ImageToTextService(){
+    }
+
+    private BufferedImage convertARGBToRGB(BufferedImage image) {
+        int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        int[] pixelsOut = ((DataBufferInt) result.getRaster().getDataBuffer()).getData();
+        System.arraycopy(pixels, 0, pixelsOut, 0, pixels.length);
+        return result;
     }
 
     public String toText(BufferedImage image) throws IOException {
@@ -180,18 +189,7 @@ public class ImageToTextService {
             yClone += fontSize;
         }
 
-        WritableRaster raster = textImage.getRaster();
-        WritableRaster newRaster = raster.createWritableChild(0, 0, width, height, 0, 0, new int[] {0, 1, 2});
-
-        // create a ColorModel that represents the one of the ARGB except the alpha channel:
-        DirectColorModel cm = (DirectColorModel)textImage.getColorModel();
-        DirectColorModel newCM = new DirectColorModel(cm.getPixelSize(),
-                cm.getRedMask(), cm.getGreenMask(), cm.getBlueMask());
-
-        // now create the new buffer that is used ot write the image:
-        BufferedImage rgbBuffer = new BufferedImage(newCM, newRaster, false, null);
-
-        return rgbBuffer;
+        return convertARGBToRGB(textImage);
     }
 
     private BufferedImage resize(BufferedImage image) {
@@ -215,7 +213,9 @@ public class ImageToTextService {
         FFmpegFrameRecorder frameRecorder = null;
         try {
             frameGrabber.start();
-            frameRecorder = new FFmpegFrameRecorder("txtvid/txt-"+video.getName()+".mp4", frameGrabber.getImageWidth(), frameGrabber.getImageHeight(), frameGrabber.getAudioChannels());
+            int width = frameGrabber.getImageWidth() * (fontSize == 1 ? fontSize : (int)((double)fontSize/1.5));
+            int height = frameGrabber.getImageHeight() * fontSize;
+            frameRecorder = new FFmpegFrameRecorder("txtvid/txt-"+video.getName()+".mp4", width, height, frameGrabber.getAudioChannels());
             //set codec
             frameRecorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
             //set frame rate

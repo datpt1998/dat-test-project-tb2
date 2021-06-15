@@ -15,12 +15,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ImageToText {
     private static final int MAX_WIDTH = 500;
 
-    private static void exportTextImage(BufferedImage image, String fileName) throws IOException {
+    private static void exportTextImage(BufferedImage image, String fileName) throws IOException, ClassNotFoundException {
         int fontSize = 7;
         // i don't know why
         int width = image.getWidth() * (fontSize == 1 ? fontSize : (int)((double)fontSize/1.5));
@@ -47,7 +52,12 @@ public class ImageToText {
         ImageIO.write(exportImage, "png", new File("timg/timg-"+fileName+".png"));
     }
 
-    public static String toText(BufferedImage image) throws IOException {
+    public static String toText(BufferedImage image) throws IOException, ClassNotFoundException {
+//        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("Color-text.txt"));
+//        @SuppressWarnings("unchecked") Map<Integer, Integer> colorMap = (HashMap<Integer, Integer>)objectInputStream.readObject();
+//        Set<Integer> rightKeys = colorMap.keySet().stream().sorted(Integer::compareTo).collect(Collectors.toSet());
+//        Map<Integer, Integer> rightColorMap = new HashMap<>();
+//        rightKeys.forEach(rightKey -> rightColorMap.put(rightKey, colorMap.get(rightKey)));
         StringBuilder text = new StringBuilder();
         StringBuilder status = new StringBuilder();
         for(int height = 0; height < image.getHeight(); height++) {
@@ -57,12 +67,23 @@ public class ImageToText {
                 int green = currentColor.getGreen();
                 int blue = currentColor.getBlue();
 
+//                status = status.append(h+"/"+s+"/"+b+" ");
+
+                //use base 256
+//                int currentValue = (int) (blue + green * 256 + red * Math.pow(256 , 2));
+//                int min = 0;
+//                for(Integer key : rightColorMap.keySet()) {
+//                    if(currentValue >= key) {
+//                        min = key;
+//                    } else break;
+//                }
+//                currentValue = (currentValue - min) + rightColorMap.get(min);
+//                text.append((char) currentValue);
+
                 float[] hsv = Color.RGBtoHSB(red, green, blue, null);
                 float h = hsv[0];
                 float s = hsv[1];
                 float b = hsv[2];
-
-                status = status.append(h+"/"+s+"/"+b+" ");
 
                 //use hsb space color
                 if(b < 0.1) {
@@ -179,7 +200,7 @@ public class ImageToText {
 //                }
             }
             text.append("\n");
-            status.append("\n");
+//            status.append("\n");
         }
 //        exportFile(status.toString(), "window-wall-status.txt");
         return text.toString();
@@ -264,7 +285,7 @@ public class ImageToText {
         exportFile(svg.toString(), "imgsvg/svg-"+fileName+".svg");
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 //        URL url = ImageToText.class.getClassLoader().getResource("me2.jpg");
 //        BufferedImage image = importImage(url.getPath());
 //        System.out.println(toText(image));

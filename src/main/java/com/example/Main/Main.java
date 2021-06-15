@@ -112,7 +112,7 @@ public class Main {
         //conbo hjh
         //CONBO dsdsdsaadas
 
-        System.out.println((char)54772);
+        System.out.println((char)33);
         Map<String, Integer> testMap = new HashMap<>();
         testMap.put("a", 5);
         testMap.put("b", 6);
@@ -121,5 +121,12 @@ public class Main {
 
         System.out.println("Is base anot:" + Base.class.isAnnotationPresent(Test.class));
         System.out.println("Is child anot:" + Child.class.isAnnotationPresent(Test.class));
+
+        System.out.println("\n".matches("\\p{C}"));
+        System.out.println("".length());
+        System.out.println(String.valueOf((char)930));
+        Base child = new Child();
+        System.out.println(child instanceof Base);
+        System.out.println(child instanceof Child);
     }
 }
