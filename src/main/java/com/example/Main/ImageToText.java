@@ -23,7 +23,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ImageToText {
-    private static final int MAX_WIDTH = 500;
+    private static final int MAX_WIDTH = 1000;
+    private static final String[] EXCEPT_IMAGE = {"teststrip.jpg", "testStrip.png"};
 
     private static void exportTextImage(BufferedImage image, String fileName) throws IOException, ClassNotFoundException {
         int fontSize = 7;
@@ -40,7 +41,7 @@ public class ImageToText {
 //        graphic.setColor(Color.PINK);
         graphic.fillRect(x, y, exportImage.getWidth(), exportImage.getHeight());
         graphic.setColor(Color.BLACK);
-        graphic.setFont(new Font("Monospaced", Font.PLAIN, fontSize));
+        graphic.setFont(new Font("Courier New", Font.PLAIN, fontSize));
         int yClone = y;
         System.out.println(toText(image).split("\n").length);
         for(String line : toText(image).split("\n")) {
@@ -85,70 +86,78 @@ public class ImageToText {
                 float s = hsv[1];
                 float b = hsv[2];
 
+
+                //use b of hsb n area
+//                String candidate = "█▓▒Ϣ▄۩░®WɸʩԨQŷMNHgK@BGOTC6{ɟ}?I|*z;:!,'`.-ː";
+
+                String candidate = "Ϣ۩ɸɮ®ŴWɸʩԨQŷMNHgK@BGOTC6{ɟ}o?I|>*z;:!,'`.-ː";
+                System.out.println(candidate.length());
+                text.append(candidate.charAt((int)(b*(candidate.length() - 1))));
+
                 //use hsb space color
-                if(b < 0.1) {
-                    text.append("W");
-                } else if (b < 0.3){
-                    if(s < 0.25) {
-                        text.append("O");
-                    } else if (s < 0.6) {
-                        if (h <= 0.83 && h >= 0.5) {
-                            text.append("V");
-                        } else if (h < 0.5 && h >= 0.17) {
-                            text.append("P");
-                        } else {
-                            text.append("X");
-                        }
-                    } else {
-                        if (h <= 0.83 && h >= 0.5) {
-                            text.append("R");
-                        } else if (h < 0.5 && h >= 0.17) {
-                            text.append("Q");
-                        } else {
-                            text.append("M");
-                        }
-                    }
-                } else if (b < 0.6) {
-                    if(s < 0.25) {
-                        text.append("=");
-                    } else if (s < 0.6) {
-                        if (h <= 0.83 && h >= 0.5) {
-                            text.append("1");
-                        } else if (h < 0.5 && h >= 0.17) {
-                            text.append("/");
-                        } else {
-                            text.append("7");
-                        }
-                    } else {
-                        if (h <= 0.83 && h >= 0.5) {
-                            text.append("@");
-                        } else if (h < 0.5 && h >= 0.17) {
-                            text.append("6");
-                        } else {
-                            text.append("0");
-                        }
-                    }
-                } else {
-                    if(s < 0.25) {
-                        text.append("-");
-                    } else if (s < 0.6) {
-                        if (h <= 0.83 && h >= 0.5) {
-                            text.append(".");
-                        } else if (h < 0.5 && h >= 0.17) {
-                            text.append("'");
-                        } else {
-                            text.append("*");
-                        }
-                    } else {
-                        if (h <= 0.83 && h >= 0.5) {
-                            text.append(":");
-                        } else if (h < 0.5 && h >= 0.17) {
-                            text.append("\"");
-                        } else {
-                            text.append("+");
-                        }
-                    }
-                }
+//                if(b < 0.1) {
+//                    text.append("W");
+//                } else if (b < 0.3){
+//                    if(s < 0.25) {
+//                        text.append("O");
+//                    } else if (s < 0.6) {
+//                        if (h <= 0.83 && h >= 0.5) {
+//                            text.append("V");
+//                        } else if (h < 0.5 && h >= 0.17) {
+//                            text.append("P");
+//                        } else {
+//                            text.append("X");
+//                        }
+//                    } else {
+//                        if (h <= 0.83 && h >= 0.5) {
+//                            text.append("R");
+//                        } else if (h < 0.5 && h >= 0.17) {
+//                            text.append("Q");
+//                        } else {
+//                            text.append("M");
+//                        }
+//                    }
+//                } else if (b < 0.6) {
+//                    if(s < 0.25) {
+//                        text.append("=");
+//                    } else if (s < 0.6) {
+//                        if (h <= 0.83 && h >= 0.5) {
+//                            text.append("1");
+//                        } else if (h < 0.5 && h >= 0.17) {
+//                            text.append("/");
+//                        } else {
+//                            text.append("7");
+//                        }
+//                    } else {
+//                        if (h <= 0.83 && h >= 0.5) {
+//                            text.append("@");
+//                        } else if (h < 0.5 && h >= 0.17) {
+//                            text.append("6");
+//                        } else {
+//                            text.append("0");
+//                        }
+//                    }
+//                } else {
+//                    if(s < 0.25) {
+//                        text.append("-");
+//                    } else if (s < 0.6) {
+//                        if (h <= 0.83 && h >= 0.5) {
+//                            text.append(".");
+//                        } else if (h < 0.5 && h >= 0.17) {
+//                            text.append("'");
+//                        } else {
+//                            text.append("*");
+//                        }
+//                    } else {
+//                        if (h <= 0.83 && h >= 0.5) {
+//                            text.append(":");
+//                        } else if (h < 0.5 && h >= 0.17) {
+//                            text.append("\"");
+//                        } else {
+//                            text.append("+");
+//                        }
+//                    }
+//                }
 
                 //use b value of hsb
 //                if(b > 0.8) {
@@ -230,10 +239,19 @@ public class ImageToText {
         exportFile(htmlHelper.getContent(), "imgtxthtml/html-"+ fileName + ".html");
     }
 
+    private static boolean testPath(String path) {
+        for(String s : EXCEPT_IMAGE) {
+            if(path.endsWith(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static BufferedImage importImage (String path) throws IOException {
         FileInputStream inputStream = new FileInputStream(path);
         BufferedImage image = ImageIO.read(inputStream);
-        if(image.getWidth() > MAX_WIDTH) {
+        if(image.getWidth() > MAX_WIDTH && !testPath(path)) {
             double scaleFactor = ((double) MAX_WIDTH) / ((double) image.getWidth());
             int newHeight = (int)(((double)image.getHeight()) * scaleFactor);
             BufferedImage scaledImage = new BufferedImage(MAX_WIDTH, newHeight, BufferedImage.TYPE_INT_ARGB);

@@ -6,9 +6,17 @@ import com.example.Data.Child;
 import com.example.Service.GenericService;
 import com.example.Service.TargetClass;
 import com.example.annotation.Test;
+import com.example.enumm.TestEnum;
 
 import java.awt.*;
+import java.io.BufferedInputStream;
 import java.io.Console;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -20,7 +28,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, URISyntaxException {
 
         System.out.println();
         System.out.println(null==null);
@@ -128,5 +136,40 @@ public class Main {
         Base child = new Child();
         System.out.println(child instanceof Base);
         System.out.println(child instanceof Child);
+
+        System.out.println((int)Long.MAX_VALUE);
+
+        BufferedInputStream inputStream = (BufferedInputStream) Runtime.getRuntime().exec("ipconfig").getInputStream();
+        int i = 0;
+        while ((i = inputStream.read()) != -1) {
+            System.out.print((char)i);
+        }
+
+        System.out.println(TestEnum.Test.valueOf("tEst1".toLowerCase()));
+
+        List<Animal> animals = new ArrayList<>();
+
+        TestEnum testEnum = new TestEnum();
+        System.out.println(testEnum.getTest());
+
+        Object a = true;
+        System.out.println(a instanceof Boolean);
+        System.out.println(a instanceof Number);
+
+        int switchVar = 3;
+        switch (switchVar) {
+            case 1:
+                System.out.println(1);
+                break;
+            case 2:
+                System.out.println(2);
+                break;
+        }
+
+        System.out.println(BigDecimal.valueOf(5).divide(BigDecimal.valueOf(3), 8, RoundingMode.DOWN));
+
+        BigDecimal bigDecA = BigDecimal.valueOf(5);
+        bigDecA.subtract(BigDecimal.valueOf(3));
+        System.out.println(bigDecA);
     }
 }

@@ -28,8 +28,16 @@ public class GrayScaledConvertor {
                 float[] hsv = Color.RGBtoHSB(red, green, blue, null);
                 float h = hsv[0];
                 float s = 0;
-                float b = hsv[2];
-                image.setRGB(width, height, Color.HSBtoRGB(h, s, b));
+//                256 area b
+//                float b = hsv[2];
+//                11 area b
+//                float b = (float)((int)(hsv[2]*10))/10;
+//                n+1 area b
+//                float b = (float)((int)(hsv[2]*30))/30;
+//                image.setRGB(width, height, Color.HSBtoRGB(h, s, b));
+//                use rgb
+                int avg = (red+green+blue)/3;
+                image.setRGB(width, height, new Color(avg, avg, avg).getRGB());
             }
         }
         return image;

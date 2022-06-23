@@ -29,9 +29,9 @@ public class MysqlConnector {
     public Connection getMySQLConnection() {
         Connection conn=null;
         try {
-            String templateConnectionString="jdbc:mysql://%s:%s/%s";
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(String.format(templateConnectionString, host, port, database, username, password));
+            String templateConnectionString="jdbc:mariadb://%s:%s/%s?allowMultiQueries=true";
+            Class.forName("org.mariadb.jdbc.Driver");
+            conn = DriverManager.getConnection(String.format(templateConnectionString, host, port, database), username, password);
             System.out.println("connect successfully!");
         }catch(Exception e) {
             System.out.println("connect failure!");
