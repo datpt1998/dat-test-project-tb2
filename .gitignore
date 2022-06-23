@@ -1,4 +1,5 @@
 target/
+.idea/
 
 ### result folder ###
 img/
@@ -12,3 +13,7 @@ imgex/
 imggray/
 imgmono/
 imgnoshadow/
+imgbin/
+imgibin/
+pdfimg/
+imgrandom/
