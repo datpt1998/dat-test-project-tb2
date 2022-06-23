@@ -1,5 +1,8 @@
 package com.example.Main;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class MainFile {
     public static void main(String[] args) {
         try {
@@ -10,6 +13,13 @@ public class MainFile {
 //            Media video = new Media(new File("sample_video.mp4").toURI().toString());
 //            MediaPlayer mediaPlayer = new MediaPlayer(video);
 //            System.out.println(mediaPlayer.getTotalDuration());
+
+            BufferedReader reader = new BufferedReader(new FileReader("test.txt"));
+            String s = reader.readLine();
+            while (s != null) {
+                System.out.println(s);
+                s = reader.readLine();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
