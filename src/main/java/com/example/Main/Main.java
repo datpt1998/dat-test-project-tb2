@@ -171,5 +171,23 @@ public class Main {
         BigDecimal bigDecA = BigDecimal.valueOf(5);
         bigDecA.subtract(BigDecimal.valueOf(3));
         System.out.println(bigDecA);
+
+        Short max = Short.MAX_VALUE;
+        System.out.println(++max);
+
+        varargs("trực", "tiếp");
+        String[] sArray = {"from", "array"};
+        varargs(sArray);
+        List<String> sList = new ArrayList<>();
+        sList.add("From");
+        sList.add("list");
+        System.out.println(sList);
+        varargs(sList.toArray(new String[0]));
+    }
+
+    private static void varargs(String... a) {
+        for (String s : a) {
+            System.out.println(s);
+        }
     }
 }
